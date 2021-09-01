@@ -42,7 +42,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    msg = message.content.split(" ")[0]
+    msg = message.content
     chsend = message.channel
     if message.author == client.user:
         return
