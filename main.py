@@ -30,6 +30,10 @@ images = [
     "https://www.memecreator.org/static/images/memes/5286815.jpg"
 ]
 
+def add_english_last(content):
+    with open('english.txt', 'w') as english:
+        english.write(content)
+
 
 @client.event
 async def on_ready():
@@ -42,6 +46,28 @@ async def on_message(message):
     chsend = message.channel
     if message.author == client.user:
         return
+    if message.content.startswith(".hello"):
+        embedVar = discord.Embed(
+            title="Hello mate",
+            description="This is a bot used for study purposes.\n Here are the listed commands you could use for the syllabus and other resources\n",
+            color=0xE10600,
+        )
+        embedVar.add_field(
+            name="CBSE curriculum 2021-22",
+            value="1.English:- .eng\n 2.Maths:- .maths\n 3.Physics:- .phy\n 4.Chemistry:- .chem\n 5.Computer Science:- .cs\n 6.Biology:- .bio",
+            inline=True,
+        )
+        embedVar.add_field(
+            name="For Fun", value="1. .pog\n 2. .sreeharisidot\n 3. .roll", inline=False
+        )
+        embedVar.set_footer(
+            icon_url="https://www.clipartmax.com/png/small/262-2620113_cbse-logo-central-board-of-secondary-education.png",
+            text=f"Godspeed",
+        )
+
+        await message.channel.send(embed=embedVar)
+
+
     if message.content.startswith(".hello"):
         embedVar = discord.Embed(
             title="Hello mate",
@@ -100,5 +126,13 @@ async def on_message(message):
         random_link = f'https://memegenerator.net/img/images/{random_num}.jpg' # string interpolation
         embedVar.set_image(url=random_link)
         await message.channel.send(embed=embedVar)
+
+    if message.content.startswith(".engLast"):
+        add_english_last(message.content.replace('.engLast', ''))
+        await message.channel.send("Successfully added the last line taught today")
+
+    if message.content.startswith(".showEngLast"):
+        with open('english.txt', 'r') as english:
+            await message.channel.send(english.read())
 
 client.run(os.getenv("TOKEN"))
